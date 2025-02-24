@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct TodoListAppApp: App {
+    @StateObject private var dateManager: DateManager = DateManager()
+    @StateObject private var taskListManager: TaskListManager = TaskListManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(dateManager)
+                .environmentObject(taskListManager)
         }
     }
 }

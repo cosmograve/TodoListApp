@@ -8,17 +8,43 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showNewTaskView: Bool = false
+    @EnvironmentObject var weekManager: DateManager
+    @EnvironmentObject var taskListManager: TaskListManager
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            VStack {
+                DateHeaderView()
+                ScrollView(.vertical) {
+                    VStack {
+                        TaskListView(date: $weekManager.selectedDate, tasks: $taskListManager.tasks)
+                    }
+                }
+                .scrollIndicators(.hidden)
+            }
+            .padding()
+            .overlay(alignment: .bottomTrailing) {
+                Button {
+                    showNewTaskView.toggle()
+                } label: {
+                    Image(systemName: "plus.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40)
+                        .foregroundStyle(.purple)
+                }
+                .padding(.horizontal)
+            }
         }
-        .padding()
+        .sheet(isPresented: $showNewTaskView) {
+            NewTaskView()
+                .presentationDetents([.fraction(0.4)])
+        }
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(DateManager())
+        .environmentObject(TaskListManager())
 }
