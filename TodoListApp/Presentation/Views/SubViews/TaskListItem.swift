@@ -51,7 +51,7 @@ struct TaskListItem: View {
 }
 
 #Preview {
-    ContentView()
+    MainView()
         .environmentObject(DateManager())
         .environmentObject(TaskListManager())
 }

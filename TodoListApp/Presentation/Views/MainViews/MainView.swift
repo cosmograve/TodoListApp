@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainView: View {
     @State private var showNewTaskView: Bool = false
     @EnvironmentObject var weekManager: DateManager
     @EnvironmentObject var taskListManager: TaskListManager
@@ -44,7 +44,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    MainView()
         .environmentObject(DateManager())
         .environmentObject(TaskListManager())
 }

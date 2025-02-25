@@ -13,7 +13,7 @@ struct TodoListAppApp: App {
     @StateObject private var taskListManager: TaskListManager = TaskListManager()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
                 .environmentObject(dateManager)
                 .environmentObject(taskListManager)
         }
