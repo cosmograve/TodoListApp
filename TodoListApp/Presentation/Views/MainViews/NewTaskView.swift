@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewTaskView: View {
-    @EnvironmentObject private var taskListManager: TaskListManager
+    var saveTask: (Task) -> ()
     @State private var taskTitle: String = ""
     @State private var taskDate: Date = Date()
     @Environment(\.dismiss) var dismiss
@@ -40,7 +40,7 @@ struct NewTaskView: View {
             .padding(24)
             Spacer()
             Button {
-                taskListManager.updateTasksList(task: Task(title: taskTitle, date: taskDate))
+                saveTask(Task(title: taskTitle, date: taskDate))
                 dismiss()
             } label: {
                 ZStack {
@@ -58,7 +58,7 @@ struct NewTaskView: View {
 }
 
 #Preview {
-    MainView()
-        .environmentObject(DateManager())
-        .environmentObject(TaskListManager())
+    NewTaskView() { task in
+        
+    }
 }

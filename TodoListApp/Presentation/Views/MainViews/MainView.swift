@@ -9,15 +9,14 @@ import SwiftUI
 
 struct MainView: View {
     @State private var showNewTaskView: Bool = false
-    @EnvironmentObject var weekManager: DateManager
-    @EnvironmentObject var taskListManager: TaskListManager
+    @ObservedObject var viewModel: MainViewViewModel
     var body: some View {
         ZStack {
             VStack {
-                DateHeaderView()
+                DateHeaderView(viewModel: viewModel)
                 ScrollView(.vertical) {
                     VStack {
-                        TaskListView(date: $weekManager.selectedDate, tasks: $taskListManager.tasks)
+                        TaskListView(viewModel: viewModel)
                     }
                 }
                 .scrollIndicators(.hidden)
@@ -37,14 +36,14 @@ struct MainView: View {
             }
         }
         .sheet(isPresented: $showNewTaskView) {
-            NewTaskView()
-                .presentationDetents([.fraction(0.4)])
+            NewTaskView() { task in
+                viewModel.updateTaskList(with: task)
+            }
+            .presentationDetents([.fraction(0.4)])
         }
     }
 }
 
 #Preview {
-    MainView()
-        .environmentObject(DateManager())
-        .environmentObject(TaskListManager())
+    MainView(viewModel: MainViewViewModel(dateUsecase: DateUsecase(dateRepository: DateRepository(dateDataProvider: DateDataProvider())), taskUsecase: TaskUsecase(taskRepository: TaskRepository(taskDataProvider: TaskDataProvider()))))
 }

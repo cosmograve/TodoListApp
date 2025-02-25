@@ -8,26 +8,20 @@
 import SwiftUI
 
 struct TaskListView: View {
-    @Binding var date: Date
-    @Binding var tasks: [Task]
-    private var currentDateTasks: [Task] {
-        let filteredTasks = tasks.filter { task in
-            let taskDateString = task.date.toString(format: "EEEE, dd MMMM yyyy")
-            let currentDateString = date.toString(format: "EEEE, dd MMMM yyyy")
-            return taskDateString == currentDateString
-        }
-        
-        return filteredTasks.sorted { !$0.isCompleted && $1.isCompleted }
-    }
-    
-    init(date: Binding<Date>, tasks: Binding<[Task]>) {
-        self._date = date
-        self._tasks = tasks
+    @ObservedObject var viewModel: MainViewViewModel
+    var currentDateTasks: [Task] = []
+    init(viewModel: MainViewViewModel) {
+        self.viewModel = viewModel
+        currentDateTasks = viewModel.getCurrentTasks()
     }
     var body: some View {
         VStack {
             ForEach(currentDateTasks) { task in
-                TaskListItem(task: task)
+                TaskListItem(task: task) { Task in
+                    viewModel.toggleTaskCompletion(for: Task)
+                } onLongPress: { Task in
+                    viewModel.deleteTask(Task)
+                }
             }
         }
         .padding(.top, 15)
@@ -35,7 +29,5 @@ struct TaskListView: View {
 }
 
 #Preview {
-    MainView()
-        .environmentObject(DateManager())
-        .environmentObject(TaskListManager())
+    MainView(viewModel: MainViewViewModel(dateUsecase: DateUsecase(dateRepository: DateRepository(dateDataProvider: DateDataProvider())), taskUsecase: TaskUsecase(taskRepository: TaskRepository(taskDataProvider: TaskDataProvider()))))
 }
