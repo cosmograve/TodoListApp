@@ -33,7 +33,7 @@ protocol MainViewViewModelProtocol: ObservableObject, MainViewViewModelInputProt
     
 }
 
-class MainViewViewModel: MainViewViewModelProtocol {
+final class MainViewViewModel: MainViewViewModelProtocol {
     private let dateUsecase: DateUsecaseProtocol
     private let taskUsecase: TaskUsecaseProtocol
     

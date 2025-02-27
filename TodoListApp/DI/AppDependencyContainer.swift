@@ -52,10 +52,10 @@ extension AppDependencyContainer {
         }
        
 // MARK: - MainViewViewModel
-        register((any MainViewViewModelProtocol).self) {
+        register(MainViewViewModel.self) {
             MainViewViewModel(
-                dateUsecase: self.resolve(DateUsecaseProtocol.self) as any DateUsecaseProtocol,
-                taskUsecase: self.resolve(TaskUsecaseProtocol.self) as any TaskUsecaseProtocol
+                dateUsecase: self.resolve(DateUsecaseProtocol.self),
+                taskUsecase: self.resolve(TaskUsecaseProtocol.self)
             )
         }
     }

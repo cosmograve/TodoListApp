@@ -10,17 +10,14 @@ import SwiftUI
 @main
 struct TodoListAppApp: App {
     
-    private let container: AppDependencyContainer = {
-        let container = AppDependencyContainer()
-        container.registerDependencies()
-        return container
-    }()
+    private let container = AppDependencyContainer()
     
     @StateObject private var viewModel: MainViewViewModel
     
     init() {
-        let viewModel: any MainViewViewModelProtocol = container.resolve((any MainViewViewModelProtocol).self)
-        self._viewModel = StateObject(wrappedValue: viewModel as! MainViewViewModel)
+        container.registerDependencies()
+        let resolvedViewModel: MainViewViewModel = container.resolve(MainViewViewModel.self)
+        self._viewModel = StateObject(wrappedValue: resolvedViewModel)
     }
     
     var body: some Scene {
