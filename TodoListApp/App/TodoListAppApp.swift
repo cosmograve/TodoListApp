@@ -9,7 +9,20 @@ import SwiftUI
 
 @main
 struct TodoListAppApp: App {
-    @StateObject private var viewModel: MainViewViewModel = MainViewViewModel(dateUsecase: DateUsecase(dateRepository: DateRepository(dateDataProvider: DateDataProvider())), taskUsecase: TaskUsecase(taskRepository: TaskRepository(taskDataProvider: TaskDataProvider())))
+    
+    private let container: AppDependencyContainer = {
+        let container = AppDependencyContainer()
+        container.registerDependencies()
+        return container
+    }()
+    
+    @StateObject private var viewModel: MainViewViewModel
+    
+    init() {
+        let viewModel: any MainViewViewModelProtocol = container.resolve((any MainViewViewModelProtocol).self)
+        self._viewModel = StateObject(wrappedValue: viewModel as! MainViewViewModel)
+    }
+    
     var body: some Scene {
         WindowGroup {
             MainView(viewModel: viewModel)

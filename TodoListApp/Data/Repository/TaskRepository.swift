@@ -18,7 +18,7 @@ protocol TaskRepositoryProtocol {
 class TaskRepository {
     private let taskDataProvider: TaskDataProviderProtocol
     
-    init(taskDataProvider: TaskDataProvider) {
+    init(taskDataProvider: TaskDataProviderProtocol) {
         self.taskDataProvider = taskDataProvider
     }
 }

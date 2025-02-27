@@ -11,7 +11,7 @@ protocol DateUsecaseProtocol {
     func calculatePastAndFutureWeeks(with date: Date) -> [WeekModel]
 }
 
-class DateUsecase {
+final class DateUsecase {
     private let dateRepository: DateRepositoryProtocol
     
     init(dateRepository: DateRepositoryProtocol) {
