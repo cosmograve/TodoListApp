@@ -17,10 +17,14 @@ final class AppDependencyContainer {
     
     func resolve<Service>(_ type: Service.Type) -> Service {
         let key = String(describing: type)
-        guard let factory = dependencies[key] as? () -> Service else {
-            fatalError("No service registered for \(key)")
+        if let instance = dependencies[key] as? Service {
+            return instance
+        } else if let factory = dependencies[key] as? () -> Service {
+            let instance = factory()
+            dependencies[key] = instance
+            return instance
         }
-        return factory()
+        fatalError("No service registered for \(key)")
     }
 }
 

@@ -28,10 +28,14 @@ class DateDataProvider {
 
 extension DateDataProvider: DateDataProviderProtocol {
     func calculatePastAndFutureWeeks(with date: Date) -> [WeekModel] {
+        guard let previousWeek = Calendar.current.date(byAdding: .day, value: -7, to: date),
+              let nextWeek = Calendar.current.date(byAdding: .day, value: 7, to: date) else {
+            return []
+        }
         return [
-            week(for: Calendar.current.date(byAdding: .day, value: -7, to: date)!, with: -1),
+            week(for: previousWeek, with: -1),
             week(for: date, with: 0),
-            week(for: Calendar.current.date(byAdding: .day, value: 7, to: date)!, with: 1),
+            week(for: nextWeek, with: 1)
         ]
     }
 }
